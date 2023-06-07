@@ -17,8 +17,10 @@ const Login = () => {
     const payload = { ...data };
     console.log(payload);
     try {
-      const response = await login(payload);
-      console.log(response);
+      navigate("/dashboard");
+
+      // const response = await login(payload);
+      // console.log(response);
       //   if (response.error.originalStatus === 200) {
       //     toast.success("OTP Verified");
       //     setTimeout(() => {

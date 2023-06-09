@@ -105,6 +105,28 @@ const EventHandler = ({ onCancel }) => {
     formState: { errors },
   } = useForm();
 
+  const roomPlan = [
+    { value: "BB", label: "BB" },
+    { value: "EP", label: "EP" },
+    { value: "AP", label: "AP" },
+    { value: "MAP", label: "MAP" },
+  ];
+  const service = [
+    { value: "included", label: "Included" },
+    { value: "notIncluded", label: "Not Included" },
+  ];
+  const room = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" },
+  ];
+  const payment = [
+    { value: "paid", label: "Paid" },
+    { value: "unpaid", label: "Unpaid" },
+  ];
+
   const onSubmit = async (data) => {
     const payload = { ...data };
     console.log(payload);
@@ -144,7 +166,7 @@ const EventHandler = ({ onCancel }) => {
           className="  justify-center items-center  p-5 mx-auto"
         >
           <div className="flex flex-col w-full">
-            <div className="relative">
+            <div className="relative text-gray-600">
               <div className="flex md:flex-row  flex-col gap-2">
                 <div className="md:w-1/2 w-full">
                   <input
@@ -165,7 +187,7 @@ const EventHandler = ({ onCancel }) => {
                     </span>
                   )}
                 </div>
-                <div className="md:w-1/2 w-full">
+                <div className="md:w-1/2 w-full ">
                   <input
                     id="guestEmail"
                     type="email"
@@ -185,7 +207,7 @@ const EventHandler = ({ onCancel }) => {
                   )}
                 </div>
               </div>
-              <div className="flex md:flex-row  flex-col gap-2">
+              <div className="flex md:flex-row  flex-col gap-2 text-gray-600">
                 <div className="md:w-1/2 w-full">
                   <input
                     id="checkIn"
@@ -256,13 +278,13 @@ const EventHandler = ({ onCancel }) => {
                   />
                 </div>
               </div>
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2 ">
                 <div className="md:w-1/2 w-full">
                   <Select
-                    className="h-full mt-3 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
+                    className="h-full mt-3  focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
                     placeholder="Room Plan"
-                    // options={sex}
-                    name="sex"
+                    options={roomPlan}
+                    name="roomPlan"
                     // defaultValue={{ value: getDoctor.sex }}
                     // onChange={handleSelectChange}
                   />
@@ -271,8 +293,8 @@ const EventHandler = ({ onCancel }) => {
                   <Select
                     className="h-full mt-3 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
                     placeholder="Extra Service"
-                    // options={sex}
-                    name="sex"
+                    options={service}
+                    name="service"
                     // defaultValue={{ value: getDoctor.sex }}
                     // onChange={handleSelectChange}
                   />
@@ -283,8 +305,8 @@ const EventHandler = ({ onCancel }) => {
                   <Select
                     className="h-full mt-3 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
                     placeholder="Room No"
-                    // options={sex}
-                    name="sex"
+                    options={room}
+                    name="room"
                     // defaultValue={{ value: getDoctor.sex }}
                     // onChange={handleSelectChange}
                   />
@@ -293,14 +315,29 @@ const EventHandler = ({ onCancel }) => {
                   <div className="flex flex-col">
                     <Select
                       className="h-full mt-3 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
-                      placeholder="Rate"
+                      placeholder="Payment"
                       styles={{}}
-                      name="rate"
-                      {...register("rate", {
-                        required: "*Rate is required",
-                      })}
+                      name="payment"
+                      options={payment}
                     />
                   </div>
+                </div>
+              </div>
+
+              <div className="flex md:flex-row  flex-col gap-2 mt-1 text-gray-600">
+                <div className="w-full">
+                  <input
+                    id="rate"
+                    type="Number"
+                    name="rate"
+                    placeholder="Rate"
+                    className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
+                      errors.rate ? "border-red-500" : "border-gray-300"
+                    }`}
+                    {...register("rate", {
+                      required: "*Rate Date is required",
+                    })}
+                  />
                   {errors.rate && (
                     <p className="text-red-500 text-sm">
                       {errors.rate.message}
@@ -308,28 +345,7 @@ const EventHandler = ({ onCancel }) => {
                   )}
                 </div>
               </div>
-              <div className="md:w-full w-full mt-2 ml-1 text-slate-500">
-                <div className="font-md mb-1  ">Payment Status</div>
-                <div className="flex flex-row items-center gap-2">
-                  <input
-                    id="paid"
-                    type="radio"
-                    name="payment"
-                    value="paid"
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="paid">Paid</label>
-                  <input
-                    id="unpaid"
-                    type="radio"
-                    name="payment"
-                    value="unpaid"
-                    className="w-5 h-5 ml-2"
-                  />
-                  <label htmlFor="unpaid">Unpaid</label>
-                </div>
-              </div>
-              <div className="flex md:flex-row  flex-col gap-2 mt-1">
+              <div className="flex md:flex-row  flex-col gap-2 mt-1 text-gray-600">
                 <div className="md:w-full w-full">
                   <textarea
                     id="note"
@@ -355,7 +371,7 @@ const EventHandler = ({ onCancel }) => {
 
           <button
             type="submit"
-            className="bg-teal-600 font-bold hover:bg-teal-600 text-white w-full px-4 py-2 mt-6 rounded-md focus:ring-2 focus:ring-teal-700 ring-offset-2 outline-none focus:bg-teal-700 focus:shadow-lg"
+            className="bg-teal-600 font-bold hover:bg-teal-600 text-white w-full px-4 py-2 mt-2 rounded-md focus:ring-2 focus:ring-teal-700 ring-offset-2 outline-none focus:bg-teal-700 focus:shadow-lg"
           >
             Create Reservation
           </button>
@@ -368,8 +384,9 @@ const EventHandler = ({ onCancel }) => {
 const Reservations = () => {
   const [showEvent, setShowEvent] = useState(false);
 
-  const showEventHandler = () => {
+  const showEventHandler = (event) => {
     setShowEvent(true);
+    console.log(event.start)
   };
 
   const hideEventHandler = () => {

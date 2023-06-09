@@ -13,6 +13,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/send-otp" element={<SendOtp/>} />
           <Route path="/verify-otp" element={<VerifyOtp/>} />

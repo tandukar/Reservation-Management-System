@@ -17,19 +17,14 @@ const Login = () => {
     const payload = { ...data };
     console.log(payload);
     try {
-      navigate("/dashboard");
-
-      // const response = await login(payload);
-      // console.log(response);
-      //   if (response.error.originalStatus === 200) {
-      //     toast.success("OTP Verified");
-      //     setTimeout(() => {
-      //       navigate("/resetPassword");
-      //     }, 1000);
-      // }
-      //   else{
-      //     toast.error("Invalid OTP");
-      //   }
+      const response = await login(payload);
+      console.log(response);
+      if (response.data.token) {
+        // toast.success("OTP Verified");
+          navigate("/dashboard");
+      } else {
+        // toast.error("Invalid OTP");
+      }
     } catch (error) {
       console.log(error);
     }

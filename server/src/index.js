@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const usersRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
+const reservationRoutes = require("./routes/reservations");
 const cors = require("cors");
 require("dotenv/config");
 
@@ -18,6 +19,7 @@ app.use(express.json());
 //routes
 app.use("/users", usersRoutes);
 app.use("/users/auth", authRoutes);
+app.use("/reservations", reservationRoutes);
 
 //start server
 

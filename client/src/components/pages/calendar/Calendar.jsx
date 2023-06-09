@@ -13,6 +13,9 @@ import moment from "moment";
 import "./Reservations.css";
 import { RxCrossCircled } from "react-icons/rx";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useCreateReservationMutation } from "./ReservationApiSlice";
 
 const localizer = momentLocalizer(moment);
 const CustomToolbar = (toolbar) => {
@@ -97,13 +100,21 @@ const eventStyleGetter = (event, start, end, isSelected) => {
   };
 };
 
-const EventHandler = ({ onCancel }) => {
+const EventHandler = ({ onCancel, startDate }) => {
+  console.log("from evenhandler", startDate);
+  const [endDate, setEndDate] = useState(new Date());
+  const [roomPlanOption, setRoomPlanOption] = useState("");
+  const [roomOption, setRoomOption] = useState("");
+  const [paymentOption, setPaymentOption] = useState("");
+  const [serviceOption, setServiceOption] = useState("");
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm();
+
+  const [createReservation,{isLoading,error}] = useCreateReservationMutation();
 
   const roomPlan = [
     { value: "BB", label: "BB" },
@@ -128,11 +139,21 @@ const EventHandler = ({ onCancel }) => {
   ];
 
   const onSubmit = async (data) => {
-    const payload = { ...data };
+    const payload = {
+      ...data,
+      roomPlan: roomPlanOption,
+      roomNumber: roomOption,
+      payment: paymentOption,
+      extraService: serviceOption,
+      checkInDate: startDate,
+      checkOutDate: endDate,
+    };
     console.log(payload);
+    // console.log("room plan option",roomPlanOption);
     try {
-      // const response = await login(payload);
       console.log(payload);
+      const response = await createReservation(payload);
+      console.log(response);
       //   if (response.error.originalStatus === 200) {
       //     toast.success("OTP Verified");
       //     setTimeout(() => {
@@ -170,20 +191,20 @@ const EventHandler = ({ onCancel }) => {
               <div className="flex md:flex-row  flex-col gap-2">
                 <div className="md:w-1/2 w-full">
                   <input
-                    id="guest"
+                    id="guestName"
                     type="text"
-                    name="guest"
+                    name="guestName"
                     placeholder="Guest Name"
                     className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
-                      errors.guest ? "border-red-500" : "border-gray-300"
+                      errors.guestName ? "border-red-500" : "border-gray-300"
                     }`}
-                    {...register("guest", {
+                    {...register("guestName", {
                       required: "*Guest Name is required",
                     })}
                   />
-                  {errors.guest && (
+                  {errors.guestName && (
                     <span className="text-red-500 text-sm">
-                      {errors.guest.message}
+                      {errors.guestName.message}
                     </span>
                   )}
                 </div>
@@ -209,40 +230,30 @@ const EventHandler = ({ onCancel }) => {
               </div>
               <div className="flex md:flex-row  flex-col gap-2 text-gray-600">
                 <div className="md:w-1/2 w-full">
-                  <input
-                    id="checkIn"
-                    type="text"
-                    name="checkIn"
-                    placeholder="Check-In Date"
+                  <DatePicker
+                    selected={startDate}
                     className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
-                      errors.checkIn ? "border-red-500" : "border-gray-300"
+                      errors.endDate ? "border-red-500" : "border-gray-300"
                     }`}
-                    {...register("checkIn", {
-                      required: "*CheckIn Date is required",
-                    })}
                   />
-                  {errors.checkIn && (
+                  {errors.endDate && (
                     <p className="text-red-500 text-sm">
-                      {errors.checkIn.message}
+                      {errors.endDate.message}
                     </p>
                   )}
                 </div>
+
                 <div className="md:w-1/2 w-full">
-                  <input
-                    id="checkOut"
-                    type="text"
-                    name="checkOut"
-                    placeholder="Check-Out Date"
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
                     className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
-                      errors.checkIn ? "border-red-500" : "border-gray-300"
+                      errors.endDate ? "border-red-500" : "border-gray-300"
                     }`}
-                    {...register("checkOut", {
-                      required: "*CheckOut Date is required",
-                    })}
                   />
-                  {errors.checkOut && (
+                  {errors.endDate && (
                     <p className="text-red-500 text-sm">
-                      {errors.checkOut.message}
+                      {errors.endDate.message}
                     </p>
                   )}
                 </div>
@@ -251,30 +262,33 @@ const EventHandler = ({ onCancel }) => {
               <div className="flex md:flex-row  flex-col gap-2">
                 <div className="md:w-1/2 w-full">
                   <input
-                    id="passport"
+                    id="passportNumber"
                     type="text"
-                    name="passport"
+                    name="passportNumber"
                     placeholder="Passport Number"
                     className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
-                      errors.passport ? "border-red-500" : "border-gray-300"
+                      errors.passportNumber
+                        ? "border-red-500"
+                        : "border-gray-300"
                     }`}
-                    {...register("passport", {
+                    {...register("passportNumber", {
                       required: "*Passport Number is required",
                     })}
                   />
-                  {errors.passport && (
+                  {errors.passportNumber && (
                     <p className="text-red-500 text-sm">
-                      {errors.passport.message}
+                      {errors.passportNumber.message}
                     </p>
                   )}
                 </div>
                 <div className="md:w-1/2 w-full">
                   <input
-                    id="agent"
+                    id="agentName"
                     type="text"
-                    name="agent"
+                    name="agentName"
                     placeholder="Agent Name"
                     className="w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent border-gray-300"
+                    {...register("agentName", {})}
                   />
                 </div>
               </div>
@@ -286,7 +300,7 @@ const EventHandler = ({ onCancel }) => {
                     options={roomPlan}
                     name="roomPlan"
                     // defaultValue={{ value: getDoctor.sex }}
-                    // onChange={handleSelectChange}
+                    onChange={(e) => setRoomPlanOption(e.value)}
                   />
                 </div>
                 <div className="md:w-1/2 w-full">
@@ -296,7 +310,7 @@ const EventHandler = ({ onCancel }) => {
                     options={service}
                     name="service"
                     // defaultValue={{ value: getDoctor.sex }}
-                    // onChange={handleSelectChange}
+                    onChange={(e) => setServiceOption(e.value)}
                   />
                 </div>
               </div>
@@ -308,7 +322,7 @@ const EventHandler = ({ onCancel }) => {
                     options={room}
                     name="room"
                     // defaultValue={{ value: getDoctor.sex }}
-                    // onChange={handleSelectChange}
+                    onChange={(e) => setRoomOption(e.value)}
                   />
                 </div>
                 <div className="md:w-1/2 w-full">
@@ -319,6 +333,7 @@ const EventHandler = ({ onCancel }) => {
                       styles={{}}
                       name="payment"
                       options={payment}
+                      onChange={(e) => setPaymentOption(e.value)}
                     />
                   </div>
                 </div>
@@ -348,20 +363,20 @@ const EventHandler = ({ onCancel }) => {
               <div className="flex md:flex-row  flex-col gap-2 mt-1 text-gray-600">
                 <div className="md:w-full w-full">
                   <textarea
-                    id="note"
+                    id="notes"
                     type="text"
-                    name="note"
+                    name="notes"
                     placeholder="Note "
                     className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
-                      errors.note ? "border-red-500" : "border-gray-300"
+                      errors.notes ? "border-red-500" : "border-gray-300"
                     }`}
-                    {...register("note", {
+                    {...register("notes", {
                       required: "*note  is required",
                     })}
                   />
-                  {errors.note && (
+                  {errors.notes && (
                     <p className="text-red-500 text-sm">
-                      {errors.note.message}
+                      {errors.notes.message}
                     </p>
                   )}
                 </div>
@@ -383,10 +398,12 @@ const EventHandler = ({ onCancel }) => {
 
 const Reservations = () => {
   const [showEvent, setShowEvent] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
 
   const showEventHandler = (event) => {
     setShowEvent(true);
-    console.log(event.start)
+    setStartDate(event.start);
+    console.log(event.start);
   };
 
   const hideEventHandler = () => {
@@ -429,7 +446,9 @@ const Reservations = () => {
           toolbar: CustomToolbar,
         }}
       />
-      {showEvent && <EventHandler onCancel={hideEventHandler} />}
+      {showEvent && (
+        <EventHandler onCancel={hideEventHandler} startDate={startDate} />
+      )}
     </div>
   );
 };

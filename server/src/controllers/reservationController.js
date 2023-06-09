@@ -38,3 +38,23 @@ exports.createReservations = async(req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.getReservations = async(req, res) => {
+    try {
+        const reservations = await Reservation.find();
+        res.status(200).json(reservations);
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+exports.deleteReservation = async(req, res) => {
+    try {
+        const reservation = await Reservation.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Reservation deleted successfully", reservation });
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}

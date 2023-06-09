@@ -15,7 +15,10 @@ import { RxCrossCircled } from "react-icons/rx";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useCreateReservationMutation } from "./ReservationApiSlice";
+import {
+  useCreateReservationMutation,
+  useGetReservationsQuery,
+} from "./ReservationApiSlice";
 
 const localizer = momentLocalizer(moment);
 const CustomToolbar = (toolbar) => {
@@ -100,6 +103,35 @@ const eventStyleGetter = (event, start, end, isSelected) => {
   };
 };
 
+const EditHandler = ({ onCancel }) => {
+  return (
+    <div className="fixed flex flex-col top-0 left-0 w-screen h-screen bg-black bg-opacity-25  justify-center items-center z-50 ">
+      <div className="bg-white rounded-md md:w-150 w-30 ">
+        <div className=" flex flex-row px-4 py-5 bg-slate-100 rounded-t-md rounded-r-md z-10">
+          <div className="flex-grow-1 text-slate-600 text-xl">
+            Edit Reservation
+          </div>
+          <div className="ml-auto">
+            <RxCrossCircled
+              onClick={onCancel}
+              className="text-2xl text-slate-600  hover:text-slate-700"
+            />
+          </div>
+        </div>
+
+        <div className="px-4 py-5">
+          <button
+            type="submit"
+            className=" w-2/6 font-bold bg-slate-300 text-red-500  px-4 py-2 mt-2 rounded-md  "
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const EventHandler = ({ onCancel, startDate }) => {
   console.log("from evenhandler", startDate);
   const [endDate, setEndDate] = useState(new Date());
@@ -114,7 +146,9 @@ const EventHandler = ({ onCancel, startDate }) => {
     formState: { errors },
   } = useForm();
 
-  const [createReservation,{isLoading,error}] = useCreateReservationMutation();
+  const [createReservation, { isLoading, error }] =
+    useCreateReservationMutation();
+  const { refetch } = useGetReservationsQuery();
 
   const roomPlan = [
     { value: "BB", label: "BB" },
@@ -154,6 +188,7 @@ const EventHandler = ({ onCancel, startDate }) => {
       console.log(payload);
       const response = await createReservation(payload);
       console.log(response);
+      refetch();
       //   if (response.error.originalStatus === 200) {
       //     toast.success("OTP Verified");
       //     setTimeout(() => {
@@ -398,7 +433,16 @@ const EventHandler = ({ onCancel, startDate }) => {
 
 const Reservations = () => {
   const [showEvent, setShowEvent] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+
+  //get all reservation
+  const {
+    data: getReservation = [],
+    error,
+    isLoading,
+  } = useGetReservationsQuery();
+  console.log("reservations", getReservation);
 
   const showEventHandler = (event) => {
     setShowEvent(true);
@@ -406,23 +450,23 @@ const Reservations = () => {
     console.log(event.start);
   };
 
+  const showEditHandler = () => {
+    setShowEdit(true);
+  };
+
   const hideEventHandler = () => {
     setShowEvent(false);
   };
 
-  const events = [
-    {
-      title: "Room 1",
-      start: new Date(2023, 5, 7, 10, 0),
-      end: new Date(2023, 5, 9, 12, 0),
-    },
-    {
-      title: "Event 2",
-      start: new Date(2023, 5, 8, 14, 0),
-      end: new Date(2023, 5, 8, 16, 0),
-    },
-    // Add more events as needed
-  ];
+  const hideEditHandler = () => {
+    setShowEdit(false);
+  };
+
+  const events = getReservation.map((reservation) => ({
+    title: "Room " + reservation.roomNumber,
+    start: reservation.checkInDate,
+    end: reservation.checkOutDate,
+  }));
 
   const handleSelectSlot = (event) => {
     console.log(event.start);
@@ -440,7 +484,7 @@ const Reservations = () => {
         events={events}
         style={{ height: "90vh" }}
         eventPropGetter={eventStyleGetter}
-        onSelectEvent={handleSelectSlot}
+        onSelectEvent={showEditHandler}
         onSelectSlot={showEventHandler}
         components={{
           toolbar: CustomToolbar,
@@ -449,6 +493,7 @@ const Reservations = () => {
       {showEvent && (
         <EventHandler onCancel={hideEventHandler} startDate={startDate} />
       )}
+      {showEdit && <EditHandler onCancel={hideEditHandler} />}
     </div>
   );
 };

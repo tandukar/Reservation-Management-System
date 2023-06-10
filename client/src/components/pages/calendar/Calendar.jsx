@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   useCreateReservationMutation,
   useGetReservationsQuery,
+  useDeleteReservationMutation,
 } from "./ReservationApiSlice";
 
 const localizer = momentLocalizer(moment);
@@ -103,7 +104,22 @@ const eventStyleGetter = (event, start, end, isSelected) => {
   };
 };
 
-const EditHandler = ({ onCancel }) => {
+const EditHandler = ({ onCancel, id }) => {
+  const [deleteReservation, { isLoading, error }] =
+    useDeleteReservationMutation();
+  const { refetch } = useGetReservationsQuery();
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteReservation(id);
+      console.log("THIS IS RESPONSE FROM DELETE", response);
+      refetch();
+    } catch (error) {
+      console.log("THIS IS ERROR FROM DELETE", error);
+    }
+  };
+
+  console.log("THIS IS ID FROM EDIT HANDLER", id);
   return (
     <div className="fixed flex flex-col top-0 left-0 w-screen h-screen bg-black bg-opacity-25  justify-center items-center z-50 ">
       <div className="bg-white rounded-md md:w-150 w-30 ">
@@ -120,12 +136,26 @@ const EditHandler = ({ onCancel }) => {
         </div>
 
         <div className="px-4 py-5">
-          <button
-            type="submit"
-            className=" w-2/6 font-bold bg-slate-300 text-red-500  px-4 py-2 mt-2 rounded-md  "
-          >
-            Delete
-          </button>
+          <div>suiiiii</div>
+          <div className="flex flex-row justify-between">
+            <div>
+              <button
+                type="submit"
+                className="w-1/8 font-bold bg-gray-600 text-white px-4 py-2 mt-2 rounded-md"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-1/8 font-bold bg-teal-600 text-white px-4 py-2 mt-2 rounded-md"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -435,6 +465,7 @@ const Reservations = () => {
   const [showEvent, setShowEvent] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [id, setId] = useState(null);
 
   //get all reservation
   const {
@@ -450,7 +481,8 @@ const Reservations = () => {
     console.log(event.start);
   };
 
-  const showEditHandler = () => {
+  const showEditHandler = (id) => {
+    setId(id);
     setShowEdit(true);
   };
 
@@ -463,6 +495,7 @@ const Reservations = () => {
   };
 
   const events = getReservation.map((reservation) => ({
+    id: reservation._id,
     title: "Room " + reservation.roomNumber,
     start: reservation.checkInDate,
     end: reservation.checkOutDate,
@@ -484,7 +517,8 @@ const Reservations = () => {
         events={events}
         style={{ height: "90vh" }}
         eventPropGetter={eventStyleGetter}
-        onSelectEvent={showEditHandler}
+        //pass id to the show even handler and
+        onSelectEvent={(event) => showEditHandler(event.id)}
         onSelectSlot={showEventHandler}
         components={{
           toolbar: CustomToolbar,
@@ -493,7 +527,8 @@ const Reservations = () => {
       {showEvent && (
         <EventHandler onCancel={hideEventHandler} startDate={startDate} />
       )}
-      {showEdit && <EditHandler onCancel={hideEditHandler} />}
+
+      {showEdit && <EditHandler onCancel={hideEditHandler} id={id} />}
     </div>
   );
 };

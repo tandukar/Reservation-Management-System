@@ -7,6 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { TbBuildingHospital } from "react-icons/tb";
 // import Profile from "../profile/Profile";
 import { IoLogOut, IoNewspaperOutline } from "react-icons/io5";
+import { BsCalendar2Range } from "react-icons/bs";
 
 const ProfileHandler = ({ onCancel, onConfirm }) => {
   return (
@@ -79,53 +80,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
             <div className="flex items-center  p-5 ">
               <nav>
                 <ul className="list-none text-md mt-9">
-                  {/* <li className="py-2 ">
+                  <li className="py-2">
                     <a
                       className=" flex items-center text-white md:text-gray-300 hover:text-white"
                       href="#"
                       onClick={() => onItemClick("Dashboard")}
                     >
                       <span className="inline-block  pr-3">
-                        <RiHomeLine className="w-7 h-7" />
+                        <BsCalendar2Range className="w-7 h-7" />
                       </span>
-                      Dashboard
-                    </a>
-                  </li> */}
-                  <li className="py-2">
-                    <a
-                      className=" flex items-center text-white md:text-gray-300 hover:text-white"
-                      href="#"
-                      onClick={() => onItemClick("Doctors")}
-                    >
-                      <span className="inline-block  pr-3">
-                        <MdPeopleOutline className="w-7 h-7" />
-                      </span>
-                      Doctors
-                    </a>
-                  </li>
-                  <li className="py-2">
-                    <a
-                      className=" flex items-center text-white md:text-gray-300 hover:text-white"
-                      href="#"
-                      onClick={() => onItemClick("Receptionist")}
-                    >
-                      <span className="inline-block  pr-3">
-                        <MdPeopleOutline className="w-7 h-7" />
-                      </span>
-                      Receptionist
-                    </a>
-                  </li>
-                  <li className="py-2 ">
-                    <a
-                      className=" flex items-center text-white md:text-gray-300 hover:text-white"
-                      href="#"
-                      onClick={() => onItemClick("Rooms/Beds")}
-                    >
-                      <span className="inline-block  pr-3 ">
-                        {/* <MdPeopleOutline className="w-7 h-7" /> */}
-                        <TbBuildingHospital className="w-7 h-6" />
-                      </span>
-                      Rooms/Beds
+                      <p className="tracking-wider font-semibold">Calendar</p>
                     </a>
                   </li>
                 </ul>
@@ -138,10 +102,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
               // onClick={logoutHandler}
               onClick={() => showProfileHandler()}
             >
-              <span className="inline-block  pr-3">
+              <span className="inline-block  pr-2">
                 <IoIosSettings className="w-7 h-7" />
               </span>
-              Settings
+              <p className="tracking-wider font-semibold">Settings</p>
             </a>
             <a
               className=" flex items-center text-white md:text-gray-300 hover:text-white"
@@ -150,7 +114,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
               <span className="inline-block  pr-3">
                 <IoLogOut className="w-7 h-7 " />
               </span>
-              Logout
+              <p className="tracking-wider font-semibold">Logout</p>
             </a>
           </div>
         </div>

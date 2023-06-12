@@ -49,6 +49,17 @@ exports.getReservations = async(req, res) => {
     }
 }
 
+exports.getReservation = async(req, res) => {
+    try {
+        const reservation = await Reservation.findById(req.params.id);
+        res.status(200).json(reservation);
+
+    } catch (err) {
+        console.log("ERROR: ", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 exports.deleteReservation = async(req, res) => {
     try {
         const reservation = await Reservation.findByIdAndDelete(req.params.id);

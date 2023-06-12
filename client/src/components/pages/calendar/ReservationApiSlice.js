@@ -11,7 +11,13 @@ export const ReservationApiSlice = apiSlice.injectEndpoints({
         }),
         getReservations: builder.query({
             query: () => ({
-                url: "reservations/get-reservation",
+                url: "reservations/get-reservations",
+                method: "Get",
+            }),
+        }),
+        getReservation: builder.query({
+            query: (id) => ({
+                url: `reservations/get-reservation/${id}`,
                 method: "Get",
             }),
         }),
@@ -25,5 +31,9 @@ export const ReservationApiSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useCreateReservationMutation, useGetReservationsQuery, useDeleteReservationMutation } =
-ReservationApiSlice;
+export const {
+    useCreateReservationMutation,
+    useGetReservationsQuery,
+    useDeleteReservationMutation,
+    useGetReservationQuery,
+} = ReservationApiSlice;

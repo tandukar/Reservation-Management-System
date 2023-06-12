@@ -15,7 +15,7 @@ import "./components/pages/calendar/Reservations.css";
 const router = createBrowserRouter(
   createRoutesFromElements(
     // <Route path="/" element={<Navigate to="/login" />}>
-    <Route path="/">
+    <Route path="/" element={<Login />}>
     <Route path="login" element={<Login />}/>
       <Route path="send-otp" element={<SendOtp />} />
       <Route path="verify-otp" element={<VerifyOtp />} />

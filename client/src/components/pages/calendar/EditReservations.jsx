@@ -8,7 +8,10 @@ import "./Reservations.css";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useGetReservationQuery } from "./ReservationApiSlice";
+import {
+  useGetReservationQuery,
+  useUpdateReservationMutation,
+} from "./ReservationApiSlice";
 
 const EditReservations = (props) => {
   const {
@@ -26,6 +29,8 @@ const EditReservations = (props) => {
   } = useGetReservationQuery(props.id, {
     skip: props.id === null,
   });
+
+  const [updateReservation, { isSuccess }] = useUpdateReservationMutation();
   const [startDate, setStartDate] = React.useState();
   const [endDate, setEndDate] = React.useState();
   const [guestName, setGuestName] = React.useState();
@@ -58,8 +63,10 @@ const EditReservations = (props) => {
   }, [getReservation]);
 
   const onSubmit = (data) => {
-    console.log("update submission", data);
-    toast.success("Reservation Updated Successfully!")
+    const payload = { ...data, checkInDate: startDate, checkOutDate: endDate };
+    console.log("update submission", payload);
+    updateReservation({ id: props.id, body: payload });
+    toast.success("Reservation Updated Successfully!");
   };
 
   const roomPlanOption = [
@@ -234,8 +241,12 @@ const EditReservations = (props) => {
                       placeholder="Room Plan"
                       options={roomPlanOption}
                       name="roomPlan"
-                      defaultValue={{ value: getReservation.roomPlan }}
-                      onChange={handleSelectChange}
+                      value={service.find(
+                        (option) => option.value === roomPlan
+                      )}
+                      onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, "roomPlan")
+                      }
                     />
                   )}
                 </div>

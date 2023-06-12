@@ -28,6 +28,14 @@ export const ReservationApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE",
             }),
         }),
+
+        updateReservation: builder.mutation({
+            query: ({ id, body }) => ({
+                url: `reservations/update-reservation/${id}`,
+                method: "PATCH",
+                body: body,
+            }),
+        }),
     }),
 });
 
@@ -36,4 +44,5 @@ export const {
     useGetReservationsQuery,
     useDeleteReservationMutation,
     useGetReservationQuery,
+    useUpdateReservationMutation
 } = ReservationApiSlice;

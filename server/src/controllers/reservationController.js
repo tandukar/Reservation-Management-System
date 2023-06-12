@@ -32,7 +32,9 @@ exports.createReservations = async(req, res) => {
         });
 
         await reservation.save();
-        res.status(200).json({ message: "Reservation created successfully", reservation });
+        res
+            .status(200)
+            .json({ message: "Reservation created successfully", reservation });
     } catch (err) {
         console.log("ERROR: ", err);
         res.status(500).json({ message: "Internal server error" });
@@ -47,15 +49,54 @@ exports.getReservations = async(req, res) => {
         console.log("ERROR: ", err);
         res.status(500).json({ message: "Internal server error" });
     }
-}
+};
 
 exports.getReservation = async(req, res) => {
     try {
         const reservation = await Reservation.findById(req.params.id);
         res.status(200).json(reservation);
-
     } catch (err) {
         console.log("ERROR: ", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+exports.updateReservation = async(req, res) => {
+    try {
+        const {
+            guestName,
+            guestEmail,
+            passportNumber,
+            agentName,
+            roomPlan,
+            extraService,
+            payment,
+            roomNumber,
+            checkInDate,
+            checkOutDate,
+            rate,
+            notes,
+        } = req.body;
+        const reservation = await Reservation.findByIdAndUpdate(req.params.id, {
+            guestName,
+            guestEmail,
+            passportNumber,
+            agentName,
+            roomPlan,
+            extraService,
+            payment,
+            roomNumber,
+            checkInDate,
+            checkOutDate,
+            rate,
+            notes,
+        });
+        res
+            .status(200)
+            .json({ message: "Reservation updated successfully", reservation });
+    } catch (err) {
+        console.log("ERROR: ", err);
+
         res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -63,9 +104,11 @@ exports.getReservation = async(req, res) => {
 exports.deleteReservation = async(req, res) => {
     try {
         const reservation = await Reservation.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Reservation deleted successfully", reservation });
+        res
+            .status(200)
+            .json({ message: "Reservation deleted successfully", reservation });
     } catch (err) {
         console.log("ERROR: ", err);
         res.status(500).json({ message: "Internal server error" });
     }
-}
+};

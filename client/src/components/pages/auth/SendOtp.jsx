@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -85,7 +85,7 @@ const SendOtp = () => {
           </div>
         </form>
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </>
   );
 };

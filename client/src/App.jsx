@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
 import Login from "./components/pages/auth/Login";
 import SendOtp from "./components/pages/auth/SendOtp";
@@ -14,9 +15,8 @@ import "./components/pages/calendar/Reservations.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    // <Route path="/" element={<Navigate to="/login" />}>
-    <Route path="/">
-    <Route path="login" element={<Login />}/>
+    <Route path="">
+      <Route path="" element={<Login />} />
       <Route path="send-otp" element={<SendOtp />} />
       <Route path="verify-otp" element={<VerifyOtp />} />
       <Route path="reset-password" element={<ResetPwd />} />
@@ -29,6 +29,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />

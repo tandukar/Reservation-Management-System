@@ -56,7 +56,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
     <>
       <div className="flex">
         <div
-          className="flex flex-col h-screen  bg-teal-700 w-60 "
+          className="flex flex-col h-screen  bg-teal-700 md:w-60 w-128 "
           onMouseEnter={() => setvisibleIcon(true)}
           onMouseLeave={() => setvisibleIcon(false)}
         >

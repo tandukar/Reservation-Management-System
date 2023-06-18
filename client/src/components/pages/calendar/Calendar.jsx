@@ -41,9 +41,11 @@ const CustomToolbar = (toolbar) => {
   const label = () => {
     const date = toolbar.date;
   };
+
   const agenda = () => {
     toolbar.onView("agenda");
   };
+  
   const month = () => {
     toolbar.onView("month");
   };
@@ -74,18 +76,18 @@ const CustomToolbar = (toolbar) => {
       </div>
       <div className="rbc-btn-group ">
         <div className="text-white">
-          <button className="rbc-btn rbc-agenda-btn   " onClick={agenda}>
+          {/* <button className="rbc-btn rbc-agenda-btn   " onClick={agenda}>
             Agenda
-          </button>
+          </button> */}
           <button className="rbc-btn rbc-month-btn" onClick={month}>
             Month
           </button>
-          <button className="rbc-btn rbc-day-btn" onClick={day}>
+          {/* <button className="rbc-btn rbc-day-btn" onClick={day}>
             Day
-          </button>
+          </button>*/}   
           <button className="rbc-btn rbc-week-btn" onClick={week}>
             Week
-          </button>
+          </button> 
         </div>
       </div>
     </div>
@@ -245,11 +247,11 @@ const EventHandler = ({ onCancel, startDate }) => {
     { value: "notIncluded", label: "Not Included" },
   ];
   const room = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" },
-    { value: "5", label: "5" },
+    { value: "301", label: "301" },
+    { value: "302", label: "302" },
+    { value: "303", label: "303" },
+    { value: "304", label: "304" },
+    { value: "305", label: "305" },
   ];
   const payment = [
     { value: "paid", label: "Paid" },
@@ -275,6 +277,8 @@ const EventHandler = ({ onCancel, startDate }) => {
       refetch();
       if (response.data) {
         toast.success("Reservation Created");
+        
+
          }
       //   if (response.error.originalStatus === 200) {
       //     toast.success("OTP Verified");
@@ -495,9 +499,11 @@ const EventHandler = ({ onCancel, startDate }) => {
                       className={`w-full border rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent ${
                         errors.notes ? "border-red-500" : "border-gray-300"
                       }`}
+                      
                       {...register("notes", {
-                        required: "*note  is required",
+                        required: serviceOption === "included" ? "*Note is required" : false
                       })}
+                      
                     />
                     {errors.notes && (
                       <p className="text-red-500 text-sm">
@@ -582,7 +588,7 @@ const Reservations = () => {
           Reservations
         </h1>
         <Calendar
-          views={["day", "agenda", "work_week", "month"]}
+          views={[ "month"]}
           selectable
           localizer={localizer}
           defaultDate={new Date()}

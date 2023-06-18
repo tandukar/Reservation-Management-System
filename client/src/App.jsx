@@ -14,6 +14,7 @@ import VerifyOtp from "./components/pages/auth/VerifyOtp";
 import ResetPwd from "./components/pages/auth/Resetpwd";
 import Dashboard from "./components/pages/dashboard/Dashboard";
 import "./components/pages/calendar/Reservations.css";
+import Create from "./components/pages/auth/Create";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPwd />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/create" element={<Create/>}/>
       </Routes>
     </Router>
   );

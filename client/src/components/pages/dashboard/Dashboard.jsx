@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 import Reservations from "../calendar/Calendar";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // State variable to track whether the sidebar is open or closed
+  const [sidebarOpen, setSidebarOpen] = useState(false); // State variable to track whether the sidebar is open or closed
   const [authenticated, setAuthenticated] = useState(null); // State variable to track whether the user is authenticated or not
   const [selectedItem, setSelectedItem] = useState("Dashboard"); // State variable to track which item is currently selected in the sidebar
   const [userId, setUserId] = useState(null); // State variable to track the ID of the currently logged in user
@@ -66,7 +66,7 @@ const Dashboard = () => {
           </div>
         )}
         <div className="flex-1 h-screen">
-          <div className="h-full pt-7 ml-5 mr-8">
+          <div className="h-full pt-7 md:ml-5 md:mr-8 ml-2 mr-2">
             {selectedItem === "Dashboard" ? <Reservations /> : null}
           </div>
         </div>

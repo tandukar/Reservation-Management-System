@@ -271,6 +271,10 @@ const EventHandler = ({ onCancel, startDate }) => {
     console.log(payload);
     // console.log("room plan option",roomPlanOption);
     try {
+      if (startDate > endDate) {
+        toast.error("Check-Out Date should be greater than Check-In Date");
+        return;
+      }
       console.log(payload);
       const response = await createReservation(payload);
       console.log(response);

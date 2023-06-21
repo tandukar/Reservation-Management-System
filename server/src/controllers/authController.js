@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/Users");
 
+
 exports.login = async(req, res) => {
     try {
         const { email, password } = req.body;
@@ -14,10 +15,10 @@ exports.login = async(req, res) => {
         if (!validPwd)
             return res.status(400).json({ message: "Email or password is wrong" });
         const token = jwt.sign({ _id: emailExists._id }, process.env.TOKEN_SECRET);
-        console.log(token)
-            // store the token in the cookie
-            // res.cookie("auth-token", token, { maxAge: 900000, httpOnly: true });
-            // res.cookie("auth-token", token, { maxAge: 900000, httpOnly: true, sameSite: "None", secure: true });
+        console.log(token);
+        // store the token in the cookie
+        // res.cookie("auth-token", token, { maxAge: 900000, httpOnly: true });
+        // res.cookie("auth-token", token, { maxAge: 900000, httpOnly: true, sameSite: "None", secure: true });
 
         res.cookie("auth-token", token, {
             httpOnly: true,

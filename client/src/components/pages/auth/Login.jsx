@@ -21,7 +21,7 @@ const Login = () => {
       console.log(response);
       if (response.data.token) {
         // toast.success("OTP Verified");
-          navigate("/dashboard");
+        navigate("/dashboard");
       } else {
         // toast.error("Invalid OTP");
       }
@@ -109,7 +109,13 @@ const Login = () => {
             >
               Log in
             </button>
-          </form>
+            <p className="text-gray-700 mt-3">
+              Don't have an account? &nbsp; 
+              <button onClick={navigate("/create")} className="cursor-pointer">
+               Register
+              </button>
+            </p>
+          </form> 
         </div>
       </div>
     </div>

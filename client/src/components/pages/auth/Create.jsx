@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "./AuthApiSlice";
 
 const Create = () => {
   const {
@@ -10,20 +11,24 @@ const Create = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const [registerUser] = useRegisterUserMutation();
 
   const onSubmit = async (data) => {
     const payload = { ...data };
     try {
-        console.log(payload); 
-        if (payload.password === payload.confirmPassword) {
-            console.log("passwords match");
+      console.log(payload);
+      if (payload.password === payload.confirmPassword) {
+        console.log("passwords match");
+        console.log(payload);
+        const response = await registerUser(payload);
+        if (response) {
+          navigate("/login");
+        } else {
+          console.log("error");
         }
-        else {
-            console.log("passwords don't match");
-        }
-        
-    
-      
+      } else {
+        console.log("passwords don't match");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +46,7 @@ const Create = () => {
         <div className="bg-white w-80 md:w-1/3 h-auto rounded-md shadow-md p-5 md:p-10">
           <div className="text-left flex flex-col items-center">
             <p className="font-semibold text-gray-700 text-2xl">
-              Welcome back to      
+              Welcome back to
             </p>
             <h1 className="text-2xl font-bold text-orange-500 ml-2">
               Sunny Guest House
@@ -66,7 +71,7 @@ const Create = () => {
                     className="w-full border border-gray-300 rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
                     error={errors.username ? true : false}
                     {...register("username", {
-                      required: "*Email is required",
+                      required: "*Username is required",
                     })}
                   />
                 </div>
@@ -103,7 +108,9 @@ const Create = () => {
                 />
               </div>
               <div className="flex flex-col mt-2">
-                <label className="text-gray-500 text-left ">Confirm Password</label>
+                <label className="text-gray-500 text-left ">
+                  Confirm Password
+                </label>
               </div>
               <div className="relative">
                 <input
@@ -123,9 +130,12 @@ const Create = () => {
               type="submit"
               className="bg-teal-600 font-bold hover:bg-teal-600 text-white w-full px-4 py-2 mt-6 rounded-md focus:ring-2 focus:ring-teal-700 ring-offset-2 outline-none focus:bg-teal-700 focus:shadow-lg"
             >
-              Create User
+              Create User 
             </button>
+          <p className="text-gray-700 mt-3">Already have an account?  <button onClick={()=>{navigate('/login')} } >Login </button></p>
+
           </form>
+
         </div>
       </div>
     </div>

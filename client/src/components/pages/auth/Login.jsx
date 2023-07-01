@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "./AuthApiSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const {
@@ -18,12 +20,17 @@ const Login = () => {
     console.log(payload);
     try {
       const response = await login(payload);
-      console.log(response);
-      if (response.data.token) {
+      console.log(response.data);
+      if (response.data && response.data.status === 200) {
         // toast.success("OTP Verified");
-        navigate("/dashboard");
+        toast.success("Login Successful");
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
       } else {
-        // toast.error("Invalid OTP");
+        console.log("aksjdhskadjfhdfkjasdhfks");
+        toast.error("Invalid ");
       }
     } catch (error) {
       console.log(error);
@@ -31,94 +38,100 @@ const Login = () => {
   };
 
   return (
-    <div className="relative">
-      <img
-        className="w-full object-cover h-screen "
-        src="background4.jpg"
-        alt="hero"
-      />
-      <div className="absolute inset-0 bg-black opacity-5"></div>
-      <div className="absolute inset-0 flex flex-col justify-center items-center ">
-        <div className="bg-white w-80 md:w-1/3 h-auto rounded-md shadow-md p-5 md:p-10">
-          <div className="text-left flex flex-col items-center">
-            <p className="font-semibold text-gray-700 text-2xl">
-              Welcome back to
-            </p>
-            <h1 className="text-2xl font-bold text-orange-500 ml-2">
-              Sunny Guest House
-            </h1>
-            <p className="text-gray-500 text-md mt-5">
-              Let's get started! Please enter your details.
-            </p>
-          </div>
-
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col justify-center items-center  mt-8 md:mt-12 mx-auto md:w-4/5"
-          >
-            <div className="w-full text-left">
-              <div className="flex flex-col">
-                <label className="text-gray-500 text-left">Email</label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="w-full border border-gray-300 rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
-                    error={errors.email ? true : false}
-                    {...register("email", {
-                      required: "*Email is required",
-                    })}
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-between mt-4 md:mt-6">
-                <label className="text-gray-500 text-left ">Password</label>
-                <a
-                  onClick={() => {
-                    navigate("/send-otp");
-                  }}
-                  className="text-teal-600 text-sm font-semibold cursor-pointer"
-                >
-                  Forgot your Password?
-                </a>
-              </div>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="w-full border border-gray-300 rounded-md px-4 py-2  mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
-                error={errors.password ? true : false}
-                {...register("password", {
-                  required: "*Password is required",
-                })}
-              />
-
-              <label className="text-left flex items-center mt-4 cursor-pointer">
-                <input type="checkbox" className="form-checkbox h-4 w-4" />
-                <span className="ml-2 text-sm font-semibold text-teal-600 cursor-pointer">
-                  Remember this device
-                </span>
-              </label>
+    <>
+      <ToastContainer />
+      <div className="relative">
+        <img
+          className="w-full object-cover h-screen "
+          src="background4.jpg"
+          alt="hero"
+        />
+        <div className="absolute inset-0 bg-black opacity-5"></div>
+        <div className="absolute inset-0 flex flex-col justify-center items-center ">
+          <div className="bg-white w-80 md:w-1/3 h-auto rounded-md shadow-md p-5 md:p-10">
+            <div className="text-left flex flex-col items-center">
+              <p className="font-semibold text-gray-700 text-2xl">
+                Welcome back to
+              </p>
+              <h1 className="text-2xl font-bold text-orange-500 ml-2">
+                Sunny Guest House
+              </h1>
+              <p className="text-gray-500 text-md mt-5">
+                Let's get started! Please enter your details.
+              </p>
             </div>
 
-            <button
-              type="submit"
-              className="bg-teal-600 font-bold hover:bg-teal-600 text-white w-full px-4 py-2 mt-6 rounded-md focus:ring-2 focus:ring-teal-700 ring-offset-2 outline-none focus:bg-teal-700 focus:shadow-lg"
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col justify-center items-center  mt-8 md:mt-12 mx-auto md:w-4/5"
             >
-              Log in
-            </button>
-            <p className="text-gray-700 mt-3">
-              Don't have an account? &nbsp; 
-              <button onClick={navigate("/create")} className="cursor-pointer">
-               Register
+              <div className="w-full text-left">
+                <div className="flex flex-col">
+                  <label className="text-gray-500 text-left">Email</label>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="w-full border border-gray-300 rounded-md px-4 py-2 mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
+                      error={errors.email ? true : false}
+                      {...register("email", {
+                        required: "*Email is required",
+                      })}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-between mt-4 md:mt-6">
+                  <label className="text-gray-500 text-left ">Password</label>
+                  <a
+                    onClick={() => {
+                      navigate("/send-otp");
+                    }}
+                    className="text-teal-600 text-sm font-semibold cursor-pointer"
+                  >
+                    Forgot your Password?
+                  </a>
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2  mb-1 mt-2 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent"
+                  error={errors.password ? true : false}
+                  {...register("password", {
+                    required: "*Password is required",
+                  })}
+                />
+
+                <label className="text-left flex items-center mt-4 cursor-pointer">
+                  <input type="checkbox" className="form-checkbox h-4 w-4" />
+                  <span className="ml-2 text-sm font-semibold text-teal-600 cursor-pointer">
+                    Remember this device
+                  </span>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                className="bg-teal-600 font-bold hover:bg-teal-600 text-white w-full px-4 py-2 mt-6 rounded-md focus:ring-2 focus:ring-teal-700 ring-offset-2 outline-none focus:bg-teal-700 focus:shadow-lg"
+              >
+                Log in
               </button>
-            </p>
-          </form> 
+              <p className="text-gray-700 mt-3">
+                Don't have an account? &nbsp;
+                <span
+                  className="cursor-pointer"
+                  onClick={() => navigate("/create")}
+                >
+                  Register
+                </span>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
 
     // <div className="relative">
     //   <div className="absolute inset-0 z-0">

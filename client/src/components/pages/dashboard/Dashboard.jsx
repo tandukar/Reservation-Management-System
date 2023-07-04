@@ -57,7 +57,8 @@ const Dashboard = () => {
             />
           </div>
         ) : (
-          <div className="fixed md:relative md:w-60 h-full z-50   ">
+          
+          <div className="fixed md:relative  h-full z-50   ">
             <Sidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}

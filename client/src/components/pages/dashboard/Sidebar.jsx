@@ -54,9 +54,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
   };
   return (
     <>
-      <div className="flex">
+      <div className="flex cursor-default">
         <div
-          className="flex flex-col h-screen  bg-teal-700 md:w-60 w-128 "
+          className="flex flex-col h-screen bg-teal-700 w-60  "
           onMouseEnter={() => setvisibleIcon(true)}
           onMouseLeave={() => setvisibleIcon(false)}
         >
@@ -68,12 +68,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
                 </p>
               </div>
 
-              <div className="flex items-center justify-end ">
+              <div className="flex items-center justify-end">
                 <RxCross2
                   onClick={() => setSidebarOpen(false)}
-                  className={`${
-                    visibleIcon ? "opacity-1" : "opacity-0"
-                  } hover:opacity-1  text-white  h-7 w-7  transform transition-all duration-300 ease-in-out`}
+                  className={`text-white h-7 w-7 transform transition-all duration-300 ease-in-out ${
+                    visibleIcon || window.innerWidth <= 768
+                      ? "opacity-1"
+                      : "opacity-0"
+                  }`}
                 />
               </div>
             </div>
@@ -83,7 +85,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
                   <li className="py-2">
                     <a
                       className=" flex items-center text-white md:text-gray-300 hover:text-white"
-                      href="#"
                       onClick={() => onItemClick("Dashboard")}
                     >
                       <span className="inline-block  pr-3">
@@ -97,7 +98,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
             </div>
           </div>
           <div className="mt-auto p-5">
-            <a
+            {/* <a
               className=" flex items-center text-white md:text-gray-300 hover:text-white mb-2"
               // onClick={logoutHandler}
               onClick={() => showProfileHandler()}
@@ -106,7 +107,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, onItemClick }) => {
                 <IoIosSettings className="w-7 h-7" />
               </span>
               <p className="tracking-wider font-semibold">Settings</p>
-            </a>
+            </a> */}
             <a
               className=" flex items-center text-white md:text-gray-300 hover:text-white"
               onClick={logoutHandler}
